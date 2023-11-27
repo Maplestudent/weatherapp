@@ -1,9 +1,8 @@
 import Searchbar from "./components/search-bar";
 import WeatherCard from "./components/WeatherCard"; // make sure this is the correct path to your WeatherCard component
+import CurrentTimeCard from "./components/CurrentTimeCard";
 
 export default function Home() {
-  // You would typically fetch the weather data here and pass it to the WeatherCard components
-
   // Placeholder data for demonstration purposes
   const weatherData = [
     { day: "Sun", weather: "sunny", temperature: 3 },
@@ -21,6 +20,9 @@ export default function Home() {
       <h1 className="text-5xl font-extrabold text-white drop-shadow-lg mb-10">Weather App</h1>
       <Searchbar />
       <div className="flex overflow-x-auto py-4 space-x-4">
+        {/* Render CurrentWeatherCard */}
+        <CurrentTimeCard />
+        {/* Render WeatherCard components */}
         {weatherData.map((data, index) => (
           <WeatherCard
             key={index}
