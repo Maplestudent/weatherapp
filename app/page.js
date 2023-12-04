@@ -1,34 +1,44 @@
-import Searchbar from "./components/search-bar";
+"use client"
+import { useEffect, useState } from 'react';
+import { getCurrentWeather } from "./components/API";
 import WeatherCard from "./components/WeatherCard"; // make sure this is the correct path to your WeatherCard component
+import Searchbar from "./components/search-bar";
+
+
 
 export default function Home() {
-  // You would typically fetch the weather data here and pass it to the WeatherCard components
+  const [weatherData, setWeatherData] = useState([]);
 
-  // Placeholder data for demonstration purposes
-  const weatherData = [
-    { day: "Sun", weather: "sunny", temperature: 3 },
-    { day: "Mon", weather: "partly-cloudy", temperature: 6 },
-    { day: "Tue", weather: "sunny", temperature: 5 },
-    { day: "Wed", weather: "sunny", temperature: 3 },
-    { day: "Thur", weather: "partly-cloudy", temperature: 6 },
-    { day: "Fri", weather: "sunny", temperature: 5 },
-    { day: "Sat", weather: "sunny", temperature: 3 },
-    // ... other days
-  ];
+  useEffect(() => {
+    // Fetch weather data when the component mounts
+    const fetchData = async () => {
+      try {
+        const location = "Calgary"; // Replace with the desired location
+        const data = await getCurrentWeather(location);
+        setWeatherData(data.current); // Assuming the API response contains a 'current' property with weather data
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to run the effect only once on component mount
 
   return (
     <main className="min-h-screen bg-blue-500 p-8">
-      <h1 className="text-5xl font-extrabold text-white drop-shadow-lg mb-10">Weather App</h1>
+      <h1 className="text-5xl font-extrabold text-white drop-shadow-lg mb-10">
+        Weather App
+      </h1>
       <Searchbar />
       <div className="flex overflow-x-auto py-4 space-x-4">
-        {weatherData.map((data, index) => (
+      {weatherData && (
           <WeatherCard
-            key={index}
-            day={data.day}
-            weather={data.weather}
-            temperature={data.temperature}
+              day="Today"
+              weather={weatherData.condition?.text || 'N/A'}
+              temperature={weatherData.temp_c || 'N/A'}
           />
-        ))}
+    )}
+
       </div>
     </main>
   );
