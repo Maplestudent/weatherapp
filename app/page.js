@@ -16,6 +16,11 @@ export default function Home() {
         const location = "Calgary"; // Replace with the desired location
         const data = await getCurrentWeather(location);
         setWeatherData(data.current); // Assuming the API response contains a 'current' property with weather data
+        if (data.current) {
+          const isDay = isDayTime(); // Implement this function based on your requirements
+          const iconPath = `./components/weather/${isDay ? 'day' : 'night'}/${data.current.condition.code}.svg`; // Construct the icon path
+          setWeatherData({ ...data.current, iconPath });
+        }
       } catch (error) {
         console.error("Error fetching weather data:", error);
       }
@@ -36,6 +41,7 @@ export default function Home() {
               day="Today"
               weather={weatherData.condition?.text || 'N/A'}
               temperature={weatherData.temp_c || 'N/A'}
+              iconPath={weatherData.iconPath}
           />
     )}
 
