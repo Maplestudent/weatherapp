@@ -1,50 +1,67 @@
 "use client"
 import { useEffect, useState } from 'react';
-import { getCurrentWeather } from "./components/API";
-import WeatherCard from "./components/WeatherCard"; // make sure this is the correct path to your WeatherCard component
+import { get7DayWeatherForecast } from "./components/API";
+import WeatherCard from "./components/WeatherCard";
 import Searchbar from "./components/search-bar";
 
-
-
 export default function Home() {
-  const [weatherData, setWeatherData] = useState([]);
+  const [forecastData, setForecastData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchedLocation, setSearchedLocation] = useState(null);
+
+  const fetchData = async (location) => {
+    try {
+      const weatherForecast = await get7DayWeatherForecast(location);
+      const forecastDays = weatherForecast.forecast.forecastday;
+      setForecastData(forecastDays);
+      setLoading(false);
+      setSearchedLocation(location);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim() !== '') {
+      setLoading(true);
+      fetchData(searchQuery);
+    }
+  };
 
   useEffect(() => {
-    // Fetch weather data when the component mounts
-    const fetchData = async () => {
-      try {
-        const location = "Calgary"; // Replace with the desired location
-        const data = await getCurrentWeather(location);
-        setWeatherData(data.current); // Assuming the API response contains a 'current' property with weather data
-        if (data.current) {
-          const isDay = isDayTime(); // Implement this function based on your requirements
-          const iconPath = `./components/weather/${isDay ? 'day' : 'night'}/${data.current.condition.code}.svg`; // Construct the icon path
-          setWeatherData({ ...data.current, iconPath });
-        }
-      } catch (error) {
-        console.error("Error fetching weather data:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // Empty dependency array to run the effect only once on component mount
+    // Fetch data for the default location when the component mounts
+    fetchData("Calgary"); // Replace with your desired default location
+  }, []);
 
   return (
     <main className="min-h-screen bg-blue-500 p-8">
       <h1 className="text-5xl font-extrabold text-white drop-shadow-lg mb-10">
         Weather App
       </h1>
-      <Searchbar />
+      <Searchbar
+        onSearch={handleSearch}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       <div className="flex overflow-x-auto py-4 space-x-4">
-      {weatherData && (
-          <WeatherCard
-              day="Today"
-              weather={weatherData.condition?.text || 'N/A'}
-              temperature={weatherData.temp_c || 'N/A'}
-              iconPath={weatherData.iconPath}
-          />
-    )}
-
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <h2>Weather Forecast for {searchedLocation || ""}</h2>
+            {forecastData.map((forecastDay, index) => (
+              <WeatherCard
+                key={index}
+                day={forecastDay.date}
+                weather={forecastDay.day.condition.text || 'N/A'}
+                temperature={forecastDay.day.avgtemp_c || 'N/A'}
+                conditionCode={forecastDay.day.condition.code || 'N/A'}
+              />
+            ))}
+          </>
+        )}
       </div>
     </main>
   );
