@@ -22,11 +22,12 @@ export default function Searchbar({ onSearch, searchQuery, setSearchQuery }) {
         }}
       />
       <button
-        className="mt-2 bg-blue-500 text-white py-1 px-3 rounded-md cursor-pointer"
-        onClick={handleSearch}
+      className="mt-2 bg-yellow-500 text-white py-2 px-4 rounded-md cursor-pointer hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
+      onClick={handleSearch}
       >
-        Search
+      Search
       </button>
+
     </div>
   );
 }
