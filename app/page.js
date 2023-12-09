@@ -20,6 +20,9 @@ export default function Home() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
+
+      // Show an alert box with the error message
+      window.alert(`Error fetching data: Enter a Proper City Name!`);
     }
   };
 
@@ -45,12 +48,14 @@ export default function Home() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
+      <h2 className="text-center text-3xl font-extrabold text-white drop-shadow-lg mb-3 mt-3">7 Day Weather Forecast for {searchedLocation || ""}</h2>
       <div className="flex overflow-x-auto py-4 space-x-4">
         {loading ? (
           <p>Loading...</p>
         ) : (
           <>
-            <h2>Weather Forecast for {searchedLocation || ""}</h2>
+            
+            
             {forecastData.map((forecastDay, index) => (
               <WeatherCard
                 key={index}
