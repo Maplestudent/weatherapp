@@ -6,17 +6,17 @@ export default function WeatherCard({ day, weather, temperature, conditionCode }
     return currentHour >= 6 && currentHour < 18 ? 'day' : 'night';
   };
 
+
   const getIconPath = (code, timeOfDay) => {
-    const conditions = conditionsData.find(condition => condition.code === code);
-
-    if (conditions) {
-      const iconFileName = timeOfDay === 'day' ? conditions.day : conditions.night;
-      if (iconFileName) {
-        return `./components/weather/${timeOfDay}/${iconFileName}.png`;
-      }
+    const condition = conditionsData.find(item => item.code === code);
+    if (condition && condition.icon) {
+      const iconPath = `/images/weather/${timeOfDay}/${condition.icon}.png`;
+      console.log('Icon Path:', iconPath);
+      return iconPath;
     }
-
-    // If no matching condition or icon is found, return a default path or handle it as needed
+  
+    // Log a message if no matching condition or icon is found
+    console.log('Default Icon Path');
     return `./default/icon.svg`;
   };
 
@@ -24,10 +24,10 @@ export default function WeatherCard({ day, weather, temperature, conditionCode }
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-lg mx-2 my-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 2xl:w-1/6">
-      <div className="text-xl font-semibold">{day}</div>
+      <div className="text-xl font-semibold text-center">{day}</div>
       <img src={getIconPath(conditionCode, timeOfDay)} alt={weather} className="w-16 h-16 mx-auto my-3" />
-      <div className="text-lg">{temperature}°</div>
-      <div>{weather}</div>
+      <div className="text-lg text-center mb-5">{temperature}°</div>
+      <div className="text-center">{weather}</div>
     </div>
   );
 }
