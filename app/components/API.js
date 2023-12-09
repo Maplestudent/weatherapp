@@ -1,7 +1,9 @@
 // API.js
 
-const BASE_URL = 'http://api.weatherapi.com/v1';
-const REACT_APP_WEATHER_API_KEY = 'd403b6b07ce94c56ab5213347230412'; // Replace with your WeatherAPI.com API key
+const BASE_URL = 'https://api.weatherapi.com/v1';
+
+// Use the API key from the environment variable
+const REACT_APP_WEATHER_API_KEY = "d403b6b07ce94c56ab5213347230412";
 
 // Function to fetch 7-day weather forecast data
 export const get7DayWeatherForecast = async (location) => {
