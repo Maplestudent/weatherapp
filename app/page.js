@@ -7,7 +7,7 @@ import Searchbar from "./components/search-bar";
 export default function Home() {
   const [forecastData, setForecastData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('Calgary');
   const [searchedLocation, setSearchedLocation] = useState(null);
 
   const fetchData = async (location) => {
