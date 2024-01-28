@@ -48,8 +48,8 @@ export default function Home() {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
-      <h2 className="text-center text-3xl font-extrabold text-white drop-shadow-lg mb-3 mt-3">7 Day Weather Forecast for {searchedLocation || ""}</h2>
-      <div className="flex overflow-x-auto py-4 space-x-4">
+      <h2 className="text-center text-3xl font-extrabold text-white drop-shadow-lg mb-3 mt-3">Upcoming Weather Forecast for {searchedLocation || ""}</h2>
+      <div className="flex overflow-x-auto py-4 space-x-4 items-stretch justify-center">
         {loading ? (
           <p>Loading...</p>
         ) : (
